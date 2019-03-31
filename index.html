@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Habitat Helper</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="jquery.ui.touch-punch.min.js"></script>
+        <script src="jquery.alterclass.js"></script>
+        <script src="dragscrollable.min.js"></script>
+        <script src="Length.min.js"></script>
+        <link rel="stylesheet" href="image-picker.css">
+        <script src="image-picker.min.js"></script>
+        <link rel="stylesheet" href="habitat.css">
+        <script src="habitat.js"></script>
+        
+    </head>
+    <body>
+        <div id="startDialog" title="Welcome!" style="display: none;">
+            <div style="text-align: left; max-height: 80vh;">
+                Welcome to Habitat Helper!
+                <p>
+                We've heard that you're <b>the</b> person to talk to when it comes
+                to designing habitats. We have a bunch of animals that need to be
+                released into the wild, but our in-house habitat designer is sick
+                and won't be available for a whole week!
+                <p>
+                We have options you can click on for choosing the climate, fencing,
+                and habitat size.
+                You can drag plants and food items onto the grid.
+                <p>
+                Not sure what something is? Click on it and have a look at the bottom
+                right of your screen. You'll see its name there.
+                <p>
+                There's no time to waste! Our next shipment will be arriving in a few days
+                and we need these animals out of there to have room.
+                <p>
+                Can you help us out? You have five animals to choose from.
+                <p>
+                <center>
+                    <select class="image-picker show-html" id="animal-selector">
+                        <option data-img-src="beaver.svg" data-diet="herbivore" data-climate="marshland" data-img-class="animal-selector-image" data-img-alt="Beaver" value="1">Beaver</option>
+                        <option data-img-src="polarbear.png" data-diet="carnivore" data-climate="tundra" data-img-class="animal-selector-image" data-img-alt="Polar bear" value="2">Polar bear</option>
+                        <option data-img-src="manatee.png" data-diet="herbivore" data-climate="warm water" data-img-class="animal-selector-image" data-img-alt="Manatee" value="3">Manatee</option>
+                        <option data-img-src="prairiedog.png" data-diet="herbivore" data-climate="grassland" data-img-class="animal-selector-image" data-img-alt="Prairie dog" value="4">Prairie dog</option>
+                        <option data-img-src="lizard.png" data-diet="carnivore" data-climate="desert" data-img-class="animal-selector-image" data-img-alt="Lizard" value="5">Lizard</option>
+                    </select>
+                    <p>
+                    <button onclick="startGame();">Start</button>
+                </center>
+            </div>
+        </div>
+        <div id="endDialog" title="Great job!" style="display: none;">
+            Thanks for all your help!
+            <p>
+            You can try <a href="#" onclick="window.location.reload(true);">building a habitat for a different animal</a> if you want.
+        </div>
+        <div id="statsDialog" title="Stats" style="display: none;">
+            <ul>
+                <li>Food: <span id="foodStr"></span></li>
+                <li>Fencing: <span id="fencingStr"></span></li>
+                <li>Plants: <span id="plantStr"></span></li>
+                <li>Climate: <span id="climateStr"></span></li>
+                <li><b>Overall habitat: <span id="habitatStr"></span></b></li>
+            </ul>
+            <p>
+            <center><button onclick="acknowledgedStats();">OK</button></center>
+        </div>
+        <div id="header">Habitat Helper</div>
+        <div id="tooltip"></div>
+        <div id="buildit">
+            <button class="buildButton" onclick="buildIt();">Build it!</button>
+        </div>
+        <div class="screen-body">
+            
+            <div class="l-to-r-container">
+                
+                <br>
+                
+                <div id="top-adjuster"></div>
+                <div id="container-thing">
+                    
+                    <div class="habitat-builder-resize-container">
+                        <div class="square">
+                            <div class="habitat-builder-choice-container hbcch" style="bottom: -20%; left: -10%;">
+                                Plants:
+                                <img class="habitat-builder-choice" alt="grass" data-category="food,plant" src="grass_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="palm tree" data-category="plant" src="palmtree.svg"/>
+                                <img class="habitat-builder-choice" alt="water lily" data-category="plant" src="waterlily_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="fern" data-category="food,plant" src="plant_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="reeds" data-category="plant" src="reeds.svg"/>
+                                <img class="habitat-builder-choice" alt="lily pad" data-category="plant" src="lilypad_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="bush" data-category="plant" src="barren-tree.svg"/>
+                                <img class="habitat-builder-choice" alt="prairie flower" data-category="food,plant" src="prairie_flower.svg"/>
+                                <img class="habitat-builder-choice" alt="delete" src="delete.svg"/>
+                            </div>
+                            <div class="habitat-builder-choice-container hbccv" style="width: 100px; right: -30%;">
+                                Fencing:
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="small fence" data-category="fence" src="small_holed_fence.png"/>
+                                </div>
+                                <br>
+                                <div class="overflow-hider">
+                                    <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="large fence" data-category="fence" src="wire-mesh-fence.svg"/>
+                                </div>
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="moat" data-category="fence" src="water.svg"/>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="content">
+                                <div class="habitat-builder-flex">
+                                </div>
+                                <div id="fence">
+                                </div>
+                            </div>
+                            <div class="habitat-builder-choice-container hbccv" style="width: 100px; left: -30%; top: 10%;">
+                                Land types:
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="grassland" data-category="land" src="Grass7.png"/>
+                                </div>
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="marshland" data-category="land" src="marshland.jpg"/>
+                                </div>
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="desert" data-category="land" src="Sand.png"/>
+                                </div>
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="tundra" data-category="land" src="snow.jpg"/>
+                                </div>
+                                <br>
+                                <div class="overflow-hider">
+                                <img class="habitat-builder-choice habitat-builder-choice-fullsize" alt="warm water" data-category="land" src="water-pattern.svg"/>
+                                </div>
+                            </div>
+                            <div class="habitat-builder-choice-container hbcch" style="top: -20%; left: 5%;">
+                                Food:
+                                <img class="habitat-builder-choice" alt="prairie dog hole" data-category="food,meat" src="hole.svg"/>
+                                <img class="habitat-builder-choice" alt="meat trays" data-category="food,meat" src="meat.svg"/>
+                                <img class="habitat-builder-choice" alt="plants" data-category="food,plant" src="bush.svg"/>
+                                <img class="habitat-builder-choice" alt="tree" data-category="food,plant" src="tree.svg"/>
+                                <img class="habitat-builder-choice" alt="tree" data-category="food,plant" src="tree2.svg"/>
+                                <img class="habitat-builder-choice" alt="small animals" data-category="food,meat" src="mouse.svg"/>
+                                <img class="habitat-builder-choice" alt="delete" src="delete.svg"/>
+                            </div>
+                            <div class="fraction-part-container" id="habitat-size-container">
+                                Habitat size:
+                                <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="4" id="habitat-size" class="fraction-part"/>
+                                <div class="fraction-buttons">
+                                    <button class="fraction-up-button" onclick="$('#habitat-size').spinner('stepUp'); $('#habitat-size').keyup();">&#9650;</button>
+                                    <button class="fraction-down-button" onclick="$('#habitat-size').spinner('stepDown'); $('#habitat-size').keyup();">&#9660;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br>
+                </div>
+                
+            </div>
+            
+        </div>
+    </body>
+</html>
