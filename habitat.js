@@ -68,7 +68,6 @@ function buildIt() {
     var climateStr = correctString;
     var plantStr = correctString;
     var foodStr = correctString;
-    var fencingStr = correctString;
     var habitatStr = correctPrefix + "Great job! You've built an awesome habitat for this animal!</span>";
     
     /* Walk through all the squares and find out what's where*/
@@ -102,9 +101,14 @@ function buildIt() {
         perfect = false;
     }
     
-    if(numPlants < 5) {
+    if(backgroundAlt !== "tundra" && numPlants < 5) {
         plantStr = incorrectPrefix + "There aren't enough plants here.</span>";
         perfect = false;
+    } else if(backgroundAlt === "tundra" && numPlants > 0) {
+        plantStr = incorrectPrefix + "Since when are plants seen in the tundra?</span>";
+        perfect = false;
+    } else if(backgroundAlt === "tundra") {
+        plantStr = correctPrefix + "Good choice! Plants aren't in the tundra.</span>";
     }
     
     if(animalDiet === "herbivore")
@@ -116,22 +120,6 @@ function buildIt() {
         foodStr = incorrectPrefix + "The animals will quickly run out of food. Make sure you choose the appropriate type of food.</span>";
         perfect = false;
     } else {
-    }
-    
-    if(chosenFence === "large fence") {
-        fencingStr = incorrectPrefix + "This fence will let too many predators in. Consider a different one.</span>";
-        perfect = false;
-    } else if(chosenFence === undefined) {
-        fencingStr = incorrectPrefix + "You haven't picked a fence. Without a fence, predators will easily eat the animals.</span>";
-        perfect = false;
-    } else if(chosenFence === "moat") {
-        if(backgroundAlt === "desert") {
-            fencingStr = incorrectPrefix + "Seriously? A moat in a desert?</span>";
-            perfect = false;
-        } else if(chosenAnimal !== "manatee" && chosenAnimal !== "polarbear") {
-            fencingStr = incorrectPrefix + "This isn't the kind of fence that these animals would be used to.</span>";
-            perfect = false;
-        }
     }
     
     if(numEmptySquares > numSquares*(numSquares/2)) {
@@ -149,7 +137,6 @@ function buildIt() {
     $("#plantStr").html(plantStr);
     $("#foodStr").html(foodStr);
     $("#habitatStr").html(habitatStr);
-    $("#fencingStr").html(fencingStr);
     $("#statsDialog").dialog({ modal: true});
 }
 
@@ -276,6 +263,7 @@ $(function() {
         minHeight: 0,
         create: function() {
             $(".ui-dialog-content").css("max-height", "200px");
+            $("#habitat-info-div").scrollTop(0);
         }
     });
     
