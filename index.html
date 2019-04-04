@@ -163,17 +163,19 @@ and open the template in the editor.
 
             
             <div class="habitat-builder-choice-container">
-                <img class="habitat-builder-choice" alt="grass" data-category="food,plant" src="grass_plant.svg"/>
-                <img class="habitat-builder-choice" alt="water lily" data-category="plant" src="waterlily_plant.svg"/>
-                <img class="habitat-builder-choice" alt="fern" data-category="food,plant" src="plant_plant.svg"/>
-                <img class="habitat-builder-choice" alt="reeds" data-category="plant" src="reeds.svg"/>
-                <img class="habitat-builder-choice" alt="lily pad" data-category="plant" src="lilypad_plant.svg"/>
-                <img class="habitat-builder-choice" alt="prairie flower" data-category="food,plant" src="prairie_flower.svg"/>
-                <img class="habitat-builder-choice" alt="meat trays" data-category="food,meat" src="meat.svg"/>
-                <img class="habitat-builder-choice" alt="plants" data-category="food,plant" src="bush.svg"/>
-                <img class="habitat-builder-choice" alt="tree" data-category="food,plant" src="tree2.svg"/>
-                <img class="habitat-builder-choice" alt="small animals" data-category="food,meat" src="mouse.svg"/>
-                <img class="habitat-builder-choice" alt="moss" data-category="plant" data-tundraok="1" src="moss.jpg"/>
+                <img class="habitat-builder-choice" data-climates="grassland,marshland" alt="grass" data-category="food,plant" src="grass_plant.svg"/>
+                <img class="habitat-builder-choice" data-climates="warm water,marshland" alt="water lily" data-category="plant" src="waterlily_plant.svg"/>
+                <img class="habitat-builder-choice" data-climates="grassland" alt="fern" data-category="food,plant" src="plant_plant.svg"/>
+                <img class="habitat-builder-choice" data-climates="marshland" alt="reeds" data-category="plant" src="reeds.svg"/>
+                <img class="habitat-builder-choice" data-climates="warm water,marshland" alt="lily pad" data-category="plant" src="lilypad_plant.svg"/>
+                <img class="habitat-builder-choice" data-climates="grassland" alt="prairie flower" data-category="food,plant" src="prairie_flower.svg"/>
+                <img class="habitat-builder-choice" data-climates="grassland,marshland,desert,warm water,tundra" alt="meat trays" data-category="food,meat" src="meat.svg"/>
+                <img class="habitat-builder-choice" data-climates="grassland,marshland" alt="bush" data-category="food,plant" src="bush.svg"/>
+                <img class="habitat-builder-choice" data-climates="grassland,desert,marshland" alt="tree" data-category="food,plant" src="tree2.svg"/>
+                <img class="habitat-builder-choice" data-climates="grassland,marshland,desert,warm water,tundra" alt="small animals" data-category="food,meat" src="mouse.svg"/>
+                <img class="habitat-builder-choice" data-climates="desert" alt="cactus" data-category="food,plant" src="cactus.svg"/>
+                <img class="habitat-builder-choice" data-climates="tundra,marshland,warm water" alt="moss" data-category="plant" src="moss.jpg"/>
+                <img class="habitat-builder-choice" data-climates="tundra,marshland,warm water" alt="algae" data-category="food,plant" src="algae.jpg"/>
                 <img class="habitat-builder-choice" id="delete-img" alt="delete" src="delete.svg"/>
             </div>
                 <button class="buildButton" onclick="buildIt();">Build it!</button>

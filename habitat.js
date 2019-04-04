@@ -62,7 +62,7 @@ function buildIt() {
     var totalSquares = numSquares * numSquares;
     var numMeat = 0;
     var numHerb = 0;
-    var tundraOk = true;
+    var climateOk = true;
     perfect = true;
     var children=$('.habitat-builder-flex').children();
     
@@ -80,8 +80,8 @@ function buildIt() {
         } else {
             console.log("Found: " + contents.className);
             if(hasCategory($(contents).attr("data-category"), "plant")) {
-                if($(contents).attr('data-tundraok') !== "1")
-                    tundraOk = false;
+                if(!hasCategory($(contents).attr('data-climates'), backgroundAlt))
+                    climateOk = false;
                 numPlants++;
             }
             
@@ -105,11 +105,11 @@ function buildIt() {
         perfect = false;
     }
     
-    if(numPlants < 5) {
-        plantStr = incorrectPrefix + "There aren't enough plants here.</span>";
+    if(!climateOk) {
+        plantStr = incorrectPrefix + "At least 1 of these plants isn't native to this area. Try different plants.</span>";
         perfect = false;
-    } else if(backgroundAlt === "tundra" && !tundraOk) {
-        plantStr = incorrectPrefix + "Since when are these types of plants seen in the tundra?</span>";
+    } else if(numPlants < 5) {
+        plantStr = incorrectPrefix + "There aren't enough plants here.</span>";
         perfect = false;
     }
     
@@ -219,7 +219,7 @@ function generateHabitatBuilder(element) {
                     var img = document.createElement("img");
                     img.src = $(item).attr("src");
                     $(img).attr("data-category", category);
-                    $(img).attr("data-tundraok", $(item).attr("data-tundraok"));
+                    $(img).attr("data-climates", $(item).attr("data-climates"));
                     img.classList.add("habitat-builder-image");
                     img.classList.add("habitat-builder-item");
                     $(this)[0].appendChild(img);
