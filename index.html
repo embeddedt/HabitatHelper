@@ -20,90 +20,11 @@ and open the template in the editor.
         <script src="image-picker.min.js"></script>
         <link rel="stylesheet" href="habitat.css">
         <script src="habitat.js"></script>
-        
+
     </head>
     <body>
-        <div id="startDialog" title="Welcome!" style="display: none;">
-            <div id="habitat-info-div" style="text-align: left; max-height: 80vh; overflow-y: scroll;">
-                Welcome to Habitat Helper!
-                <p>
-                We've heard that you're <b>the</b> person to talk to when it comes
-                to designing habitats. We have a bunch of animals that need to be
-                released into the wild, but our in-house habitat designer is sick
-                and won't be available for a whole week!
-                <p>
-                We have options you can click on for choosing the climate, fencing,
-                and habitat size.
-                You can drag plants and food items onto the grid.
-                <p>
-                Not sure what something is? Click on it and have a look at the bottom
-                right of your screen. You'll see its name there.
-                <p>
-                If you make a mistake, drag the red X to a square to erase its contents.
-                <p>
-                There's no time to waste! Our next shipment will be arriving in a few days
-                and we need these animals out of there to have room.
-                <p>
-                Can you help us out? You have five animals to choose from.
-                <p>
-                <center>
-                    <select class="image-picker show-html" id="animal-selector">
-                        <option data-img-src="beaver.svg" data-diet="herbivore" data-climate="marshland" data-img-class="animal-selector-image" data-img-alt="Beaver" value="1">Beaver</option>
-                        <option data-img-src="polarbear.png" data-diet="carnivore" data-climate="tundra" data-img-class="animal-selector-image" data-img-alt="Polar bear" value="2">Polar bear</option>
-                        <option data-img-src="manatee.png" data-diet="herbivore" data-climate="warm water" data-img-class="animal-selector-image" data-img-alt="Manatee" value="3">Manatee</option>
-                        <option data-img-src="prairiedog.png" data-diet="herbivore" data-climate="grassland" data-img-class="animal-selector-image" data-img-alt="Prairie dog" value="4">Prairie dog</option>
-                        <option data-img-src="lizard.png" data-diet="carnivore" data-climate="desert" data-img-class="animal-selector-image" data-img-alt="Lizard" value="5">Lizard</option>
-                    </select>
-                    <p>
-                    <button onclick="startGame();" tabindex="-1">Start</button>
-                </center>
-            </div>
-        </div>
-        <div id="endDialog" title="Great job!" style="display: none;">
-            Thanks for all your help!
-            <p>
-            You can try <a href="#" onclick="window.location.reload(true);">building a habitat for a different animal</a> if you want.
-        </div>
-        <div id="statsDialog" title="Stats" style="display: none;">
-            <ul>
-                <li>Food: <span id="foodStr"></span></li>
-                <li>Plants: <span id="plantStr"></span></li>
-                <li>Climate: <span id="climateStr"></span></li>
-                <li><b>Overall habitat: <span id="habitatStr"></span></b></li>
-            </ul>
-            <p>
-            <center><button onclick="acknowledgedStats();">OK</button></center>
-        </div>
-        <div id="header">Habitat Helper</div>
-        
-        <div class="screen-body">
-            
-            <div class="l-to-r-container">
-                
-                <br>
-                
-                <div id="top-adjuster"></div>
-                <div id="container-thing">
-                    
-                    <div class="habitat-builder-resize-container">
-                        <div class="square">
-                            <div class="habitat-builder-choice-container hbccv" style="width: 100px; right: -25%; top: -10%;">
-                                Plants:
-                                <img class="habitat-builder-choice" alt="grass" data-category="food,plant" src="grass_plant.svg"/>
-                                <img class="habitat-builder-choice" alt="palm tree" data-category="plant" src="palmtree.svg"/>
-                                <img class="habitat-builder-choice" alt="water lily" data-category="plant" src="waterlily_plant.svg"/>
-                                <img class="habitat-builder-choice" alt="fern" data-category="food,plant" src="plant_plant.svg"/>
-                                <img class="habitat-builder-choice" alt="reeds" data-category="plant" src="reeds.svg"/>
-                                <img class="habitat-builder-choice" alt="lily pad" data-category="plant" src="lilypad_plant.svg"/>
-                                <img class="habitat-builder-choice" alt="bush" data-category="plant" src="barren-tree.svg"/>
-                                <img class="habitat-builder-choice" alt="prairie flower" data-category="food,plant" src="prairie_flower.svg"/>
-                                <img class="habitat-builder-choice" alt="delete" src="delete.svg"/>
-                            </div>
-                            <div class="content">
-                                <div class="habitat-builder-flex">
-                                </div>
-                            </div>
-                            <div class="habitat-builder-choice-container hbccv" style="width: 100px; left: -30%; top: 10%;">
+        <!--
+        <div class="habitat-builder-choice-container hbccv" style="width: 100px; left: -30%; top: 10%;">
                                 Land types:
                                 <br>
                                 <div class="overflow-hider">
@@ -135,29 +56,143 @@ and open the template in the editor.
                                 <img class="habitat-builder-choice" alt="small animals" data-category="food,meat" src="mouse.svg"/>
                                 <img class="habitat-builder-choice" alt="delete" src="delete.svg"/>
                             </div>
-                            <div class="fraction-part-container" id="habitat-size-container">
-                                Habitat size:
-                                <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="4" id="habitat-size" class="fraction-part"/>
-                                <div class="fraction-buttons">
-                                    <button class="fraction-up-button" onclick="$('#habitat-size').spinner('stepUp'); $('#habitat-size').keyup();">&#9650;</button>
-                                    <button class="fraction-down-button" onclick="$('#habitat-size').spinner('stepDown'); $('#habitat-size').keyup();">&#9660;</button>
-                                </div>
+        <div class="habitat-builder-choice-container hbccv" style="width: 100px; right: -25%; top: -10%;">
+                                Plants:
+                                <img class="habitat-builder-choice" alt="grass" data-category="food,plant" src="grass_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="palm tree" data-category="plant" src="palmtree.svg"/>
+                                <img class="habitat-builder-choice" alt="water lily" data-category="plant" src="waterlily_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="fern" data-category="food,plant" src="plant_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="reeds" data-category="plant" src="reeds.svg"/>
+                                <img class="habitat-builder-choice" alt="lily pad" data-category="plant" src="lilypad_plant.svg"/>
+                                <img class="habitat-builder-choice" alt="bush" data-category="plant" src="barren-tree.svg"/>
+                                <img class="habitat-builder-choice" alt="prairie flower" data-category="food,plant" src="prairie_flower.svg"/>
+                                <img class="habitat-builder-choice" alt="delete" src="delete.svg"/>
                             </div>
-                            <div id="buildit-container">
-                                <div id="buildit">
-                                    <button class="buildButton" onclick="buildIt();">Build it!</button>
-                                </div>
-                                <div id="tooltip"></div>
+        -->
+        <div id="startDialog" title="Welcome!" style="display: none;">
+            <div class="habitat-info-div" style="text-align: left; max-height: 80vh; overflow-y: scroll;">
+                <a class="anchor-for-scrolling" onclick="">&nbsp;</a>
+                Welcome to Habitat Helper!
+                <p>
+                    We've heard that you're <b>the</b> person to talk to when it comes
+                    to designing habitats. We have a bunch of animals that need to be
+                    released into the wild, but our in-house habitat designer is sick
+                    and won't be available for a whole week!
+                <p>
+                    You can drag plants and food items onto the grid. Not all of the plants are
+                    food, so you'll have to do a bit of detective work or research.
+                <p>
+                    Not sure what something is? Click on it and have a look at the top
+                    of your screen. You'll see its name there.
+                <p>
+                    If you make a mistake, drag the red X to a square to erase its contents.
+                <p>
+                    There's no time to waste! Our next shipment will be arriving in a few days
+                    and we need these animals out of there to have room.
+                <p>
+                    Can you help us out? You have five animals to choose from.
+                <p>
+                <center>
+                    <select class="image-picker show-html" id="animal-selector" tabindex="-1">
+                        <option data-img-src="beaver.svg" data-diet="herbivore" data-climate="marshland" data-img-class="animal-selector-image" data-img-alt="Beaver" value="1">Beaver</option>
+                        <option data-img-src="polarbear.png" data-diet="carnivore" data-climate="tundra" data-img-class="animal-selector-image" data-img-alt="Polar bear" value="2">Polar bear</option>
+                        <option data-img-src="manatee.png" data-diet="herbivore" data-climate="warm water" data-img-class="animal-selector-image" data-img-alt="Manatee" value="3">Manatee</option>
+                        <option data-img-src="prairiedog.png" data-diet="herbivore" data-climate="grassland" data-img-class="animal-selector-image" data-img-alt="Prairie dog" value="4">Prairie dog</option>
+                        <option data-img-src="lizard.png" data-diet="carnivore" data-climate="desert" data-img-class="animal-selector-image" data-img-alt="Lizard" value="5">Lizard</option>
+                    </select>
+                    <p>
+                        <button onclick="nextDialog();" tabindex="-1">Next</button>
+                </center>
+            </div>
+        </div>
+        <div id="landDialog" title="Choose a land type" style="display: none;">
+            <div class="habitat-info-div" style="text-align: left; max-height: 80vh; overflow-y: scroll;">
+                <center>
+                    <a class="anchor-for-scrolling" onclick="">&nbsp;</a>
+                    <select class="image-picker show-html" id="land-selector" tabindex="-1">
+                        <option data-img-src="marshland.jpg"  data-climate="marshland" data-img-class="land-selector-image" data-img-alt="Beaver" value="6">Marshland</option>
+                        <option data-img-src="Grass7.png" data-climate="grassland" data-img-class="land-selector-image" data-img-alt="Polar bear" value="7">Grassland</option>
+                        <option data-img-src="Sand.png" data-climate="desert" data-img-class="land-selector-image" data-img-alt="Manatee" value="8">Desert</option>
+                        <option data-img-src="snow.jpg" data-climate="tundra" data-img-class="land-selector-image" data-img-alt="Prairie dog" value="9">Tundra</option>
+                        <option data-img-src="water-pattern.svg" data-climate="warm water" data-img-class="land-selector-image" data-img-alt="Lizard" value="10">Warm water</option>
+                    </select>
+                    <p>
+                    <button onclick="nextDialog();" tabindex="-1">Go</button>
+                </center>
+            </div>
+        </div>
+        <div id="incorrectDialog" title="Incorrect choice" style="display: none;">
+            <span id='incorrect-info'></span>
+            <center>
+                <button onclick="$('#incorrectDialog').dialog('close');" tabindex="-1">Ok</button>
+            </center>
+        </div>
+        <div id="endDialog" title="Great job!" style="display: none;">
+            Thanks for all your help!
+            <p>
+                You can try <a href="#" onclick="window.location.reload(true);">building a habitat for a different animal</a> if you want.
+        </div>
+        <div id="statsDialog" title="Stats" style="display: none;">
+            <ul>
+                <li>Food: <span id="foodStr"></span></li>
+                <li>Plants: <span id="plantStr"></span></li>
+                <li>Climate: <span id="climateStr"></span></li>
+                <li><b>Overall habitat: <span id="habitatStr"></span></b></li>
+            </ul>
+            <p>
+            <center><button onclick="acknowledgedStats();">OK</button></center>
+        </div>
+
+        <div class="screen-body">
+            <div id="tooltip"></div>
+            <div class="l-to-r-container">
+                <div class="habitat-builder-resize-container">
+                    <div class="square">
+
+                        <div class="content">
+                            <div class="habitat-builder-flex">
                             </div>
                         </div>
+
+
+
                     </div>
-                    
-                    <br>
-                    
                 </div>
-                
+
             </div>
+
             
+            <div class="habitat-builder-choice-container">
+                <img class="habitat-builder-choice" alt="grass" data-category="food,plant" src="grass_plant.svg"/>
+                <img class="habitat-builder-choice" alt="palm tree" data-category="plant" src="palmtree.svg"/>
+                <img class="habitat-builder-choice" alt="water lily" data-category="plant" src="waterlily_plant.svg"/>
+                <img class="habitat-builder-choice" alt="fern" data-category="food,plant" src="plant_plant.svg"/>
+                <img class="habitat-builder-choice" alt="reeds" data-category="plant" src="reeds.svg"/>
+                <img class="habitat-builder-choice" alt="lily pad" data-category="plant" src="lilypad_plant.svg"/>
+                <img class="habitat-builder-choice" alt="bush" data-category="plant" src="barren-tree.svg"/>
+                <img class="habitat-builder-choice" alt="prairie flower" data-category="food,plant" src="prairie_flower.svg"/>
+                <img class="habitat-builder-choice" alt="meat trays" data-category="food,meat" src="meat.svg"/>
+                <img class="habitat-builder-choice" alt="plants" data-category="food,plant" src="bush.svg"/>
+                <img class="habitat-builder-choice" alt="tree" data-category="food,plant" src="tree.svg"/>
+                <img class="habitat-builder-choice" alt="tree" data-category="food,plant" src="tree2.svg"/>
+                <img class="habitat-builder-choice" alt="small animals" data-category="food,meat" src="mouse.svg"/>
+                <img class="habitat-builder-choice" id="delete-img" alt="delete" src="delete.svg"/>
+            </div>
+                <button class="buildButton" onclick="buildIt();">Build it!</button>
+                <!--
+                <div style="margin: 5px 0;">
+                    <div id="habitat-size-text">Habitat size:</div>
+                    <div class="fraction-part-container" id="habitat-size-container">
+
+                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="4" id="habitat-size" class="fraction-part"/>
+                        <div class="fraction-buttons">
+                            <button class="fraction-up-button" onclick="$('#habitat-size').spinner('stepUp'); $('#habitat-size').keyup();">&#9650;</button>
+                            <button class="fraction-down-button" onclick="$('#habitat-size').spinner('stepDown'); $('#habitat-size').keyup();">&#9660;</button>
+                        </div>
+                    </div>
+                </div> -->
+                
         </div>
+
     </body>
 </html>

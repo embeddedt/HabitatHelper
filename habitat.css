@@ -10,7 +10,7 @@ html, body {
 }
 
 #header {
-    width: 100vw;
+    width: 100%;
     height: 30px;
     font-size: 6vw;
     text-align: center;
@@ -41,7 +41,7 @@ html, body {
     width: 100%;
     max-width: 100%;
     display: block;
-    overflow-y: auto;
+    overflow-y: hidden;
     text-align: center;
     font-size: 0px;
 }
@@ -50,14 +50,14 @@ html, body {
 
 .habitat-builder-resize-container {
     position: relative;
-    min-width: 390px;
-    min-height: 390px;
+    min-width: 200px;
+    min-height: 200px;
     display: inline-block;
     width: 50vmin;
     max-width: 70vmin;
     height: 50vmin;
-    margin: 25px;
-    top: 15vmin;
+    margin: 5px;
+    box-sizing: border-box;
 }
 
 .square {
@@ -113,24 +113,27 @@ html, body {
 }
 
 .habitat-builder-choice {
-    width: 100px;
-    height: 100px;
+    width: 10vmin;
+    height: 10vmin;
+    min-width: 35px;
+    min-height: 35px;
     margin: 2px;
     display: inline-block;
     z-index: 3;
 }
 
+#delete-img {
+    width: 7vmin;
+    height: 7vmin;
+    min-width: 25px;
+    min-height: 25px;
+}
+
 .habitat-builder-choice-container {
-    
     font-size: 14px;
     font-weight: bold;
-    display: inline-flex;
-    display: -webkit-inline-flex;
-    justify-content: center;
-    -webkit-justify-content: center;
-    text-align: center;
-    align-items: center;
-    -webkit-align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .hbccv {
@@ -198,8 +201,7 @@ html, body {
     -webkit-align-items: center;
     justify-content: flex-start;
     -webkit-justify-content: flex-start; */
-    min-width: 590px;
-    
+    width: 100%;
 }
 
 .overflow-hider {
@@ -222,15 +224,15 @@ html, body {
 #tooltip {
     font-size: 30px;
     font-weight: bold;
-    float: right;
     border: 4px red solid;
-    height: 100%;
+    height: 44px;
     display: inline-block;
-    min-width: 100px;
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
 }
 
 #buildit {
-    float:left;
     font-size: 40px;
     font-weight: bold;
     z-index: 30;
@@ -244,12 +246,11 @@ html, body {
 }
 
 #buildit-container {
-    position: absolute;
-    bottom: -45%;
-    left: 0;
-    padding-right: 0;
+    position: relative;
+    display: inline-block;
     width: 100%;
-    height: 44px;
+    height: 100px;
+    vertical-align: top;
 }
 
 #top-adjuster {
@@ -285,7 +286,6 @@ html, body {
     height: 80px;
     max-width: 100%;
     max-height: 100%;
-    font-size: 40px;
     text-align: center;
     font-weight: bold;
 }
@@ -293,7 +293,8 @@ html, body {
     display: flex;
     display: -webkit-flex;
     justify-content: center;
-    -webkit-justify-content: center;   
+    -webkit-justify-content: center;
+    position: relative;
 }
 .fraction-part-container {
     width: 150px;
@@ -334,6 +335,9 @@ html, body {
     max-height: 100%;
     margin: 0;
     padding: 0;
+    position: absolute;
+    top: 0;
+    right: 40px;
 }
 
 .ui-spinner-button {
@@ -357,6 +361,9 @@ html, body {
     height: 80px;
     display: inline-block;
     font-size: 0px;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .fraction-up-button, .fraction-down-button {
@@ -365,6 +372,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 20px;
+    box-sizing: border-box;
 }
 
 .fraction-up-button {
@@ -375,18 +383,21 @@ html, body {
 }
 
 #habitat-size-container {
-    position: absolute;
-    bottom: -25%;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
+    display: inline-block;
+    height: 100px;
     z-index: 21;
-    width: 300px;
-    max-width: 300px;
-    min-width: 300px;
 }
 
-img.animal-selector-image {
+#habitat-size-text {
+    font-size: 40px;
+    height: 100%;
+    max-width: 30%;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+}
+
+img.animal-selector-image, img.land-selector-image {
     width: 80px;
     height: 80px;
 }
@@ -483,4 +494,12 @@ a.thumbnail:hover {
 
 li{
   margin: 10px 0;
+}
+
+.ui-widget-overlay
+{
+  opacity: .98 !important; /* Make sure to change both of these, as IE only sees the second one */
+  filter: Alpha(Opacity=.98) !important;
+
+  background: rgb(30, 30, 30) !important; /* This will make it darker */
 }

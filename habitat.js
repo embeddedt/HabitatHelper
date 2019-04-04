@@ -23,7 +23,7 @@ var incorrectPrefix = "<span style='color: #bb0000'> &#10060; ";
 
 $(window).resize(function() {
     var w = $(".habitat-builder-flex").width() * 0.11;
-    $(".habitat-builder-choice:not('.habitat-builder-choice-fullsize')").css({ width: w, height: w});
+    //$(".habitat-builder-choice:not('.habitat-builder-choice-fullsize')").css({ width: w, height: w});
     $(".overflow-hider").css({ width: w, height: w});
     $(".hbch").css({ height: w });
     $(".l-to-r-container")[0].scrollIntoView({ behavior: "auto", block: "start", inline: "center" });
@@ -116,6 +116,7 @@ function buildIt() {
     
     else if(animalDiet === "carnivore")
         numHerb = Math.max(numSquares / 8, 4); /*Ignore plant value*/
+    console.log("numHerb " + numHerb + "numMeat " + numMeat + " animalDiet " + animalDiet + " numSquares " + numSquares);
     if(numMeat < Math.max(numSquares / 8, 4) || numHerb < Math.max(numSquares / 8, 4)) {
         foodStr = incorrectPrefix + "The animals will quickly run out of food. Make sure you choose the appropriate type of food.</span>";
         perfect = false;
@@ -125,8 +126,8 @@ function buildIt() {
     if(numEmptySquares > numSquares*(numSquares/2)) {
         habitatStr = incorrectPrefix + "This place seems a little... dead. Could you add some more wildlife?</span>";
         perfect = false;
-    } else if((numEmptySquares/totalSquares) < 0.25) {
-        habitatStr = incorrectPrefix + "You might want to think about increasing the habitat size. This place seems crowded.</span>";
+    } else if((numEmptySquares/totalSquares) < 0.1) {
+        habitatStr = incorrectPrefix + "Maybe you have too many items in your habitat. This place seems crowded.</span>";
         perfect = false;
     } else if(!perfect)
         habitatStr = incorrectPrefix + "You could make some improvements. Have a look at the suggestions above.</span>";
@@ -141,25 +142,30 @@ function buildIt() {
 }
 
 function generateHabitatBuilder(element) {
-    $(element).empty();
+    
     var percentage = ((1 / numSquares) * 100) + "%";
     console.log(percentage);
-    
-    for(var i = 0; i < numSquares*numSquares; i++) {
-        var child = document.createElement("div");
-        child.classList.add("habitat-builder-square");
-        $(child).attr("data-index", i);
-        $(child).css('background', lastBackground);
-        element.appendChild(child);
-        if(Math.random() <= 0.1) {
-            var img = document.createElement("img");
-            img.src = chosenAnimal;
-            $(img).attr("data-category", "animal");
-            img.classList.add("habitat-builder-image");
-            img.classList.add("habitat-builder-animal");
-            child.appendChild(img);
+    var animalCount = 0;
+    do {
+        $(element).empty();
+        animalCount = 0;
+        for(var i = 0; i < numSquares*numSquares; i++) {
+            var child = document.createElement("div");
+            child.classList.add("habitat-builder-square");
+            $(child).attr("data-index", i);
+            $(child).css('background', lastBackground);
+            element.appendChild(child);
+            if(Math.random() <= 0.1) {
+                var img = document.createElement("img");
+                img.src = chosenAnimal;
+                $(img).attr("data-category", "animal");
+                img.classList.add("habitat-builder-image");
+                img.classList.add("habitat-builder-animal");
+                child.appendChild(img);
+                animalCount++;
+            }
         }
-    }
+    } while(animalCount < (numSquares*numSquares)/4);
     $(".habitat-builder-square").css({ 
         'flex-basis': percentage,
         '-webkit-flex-basis': percentage
@@ -225,14 +231,59 @@ function generateHabitatBuilder(element) {
     makeItemsDraggable();
 }
 
+var dialogs = [ "startDialog", "landDialog" ];
+var dialogId = 0;
+function nextDialog() {
+    var isOk = true;
+    dialogId--;
+    if(dialogId === 0) {
+        chosenAnimal = $('option[value="'+$("#animal-selector").val()+'"]').attr("data-img-src");
+        animalClimate = $('option[value="'+$("#animal-selector").val()+'"]').attr("data-climate");
+        animalDiet = $('option[value="'+$("#animal-selector").val()+'"]').attr("data-diet");
+        
+    } else if(dialogId === 1) {
+        $(".habitat-builder-square").css({ 'background-image': 'url(' + $('option[value="'+$("#land-selector").val()+'"]').attr("data-img-src") + ')'});
+        lastBackground = 'url(' + $('option[value="'+$("#land-selector").val()+'"]').attr("data-img-src") + ')';
+        backgroundAlt = $('option[value="'+$("#land-selector").val()+'"]').attr("data-climate");
+        if(backgroundAlt !== animalClimate) {
+            var str = incorrectPrefix + "This animal won't thrive in that climate.</span>";
+            isOk = false;
+        }
+        generateHabitatBuilder($(".habitat-builder-flex")[0]);
+    }
+    dialogId++;
+    if(isOk) {
+        try { $("#" + dialogs[dialogId-1]).dialog('close'); } catch(e) {}
+    } else {
+        $("#incorrect-info").html(str);
+        $("#incorrectDialog").dialog({
+            modal: true
+        });
+        return;
+    }
+    $("#" + dialogs[dialogId]).dialog({ 
+        modal: true,
+        width: 'auto',
+        height: 'auto',
+        resizable: false,
+        minHeight: 0,
+        open : function(event, ui) {
+            $(".anchor-for-scrolling").focus();
+        },
+        create: function() {
+            $(".ui-dialog-content").css("max-height", "200px");
+            $(".habitat-info-div").scrollTop(0);
+            try { $(".anchor-for-scrolling")[0].scrollIntoView(); } catch(e) {}
+        }
+    });
+    dialogId++;
+}
+
 function startGame() {
-    lastBackground = "tomato";
-    chosenAnimal = $('option[value="'+$("#animal-selector").val()+'"]').attr("data-img-src");
-    animalClimate = $('option[value="'+$("#animal-selector").val()+'"]').attr("data-climate");
-    animalDiet = $('option[value="'+$("#animal-selector").val()+'"]').attr("data-diet");
-    try { $("#startDialog").dialog('close'); } catch(e) {}
+    
+    
     try { $("#endDialog").dialog('close'); } catch(e) {}
-    generateHabitatBuilder($(".habitat-builder-flex")[0]);
+    
 }
 $(function() {
     generateHabitatBuilder($(".habitat-builder-flex")[0]);
@@ -256,15 +307,9 @@ $(function() {
         hide_select : true,
         show_label  : true
     });
-    $("#startDialog").dialog({ modal: true,
-        width: 'auto',
-        height: 'auto',
-        resizable: false,
-        minHeight: 0,
-        create: function() {
-            $(".ui-dialog-content").css("max-height", "200px");
-            $("#habitat-info-div").scrollTop(0);
-        }
+    $("#land-selector").imagepicker({
+        hide_select : true,
+        show_label  : true
     });
-    
+    nextDialog();
 });
