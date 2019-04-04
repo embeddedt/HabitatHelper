@@ -62,6 +62,7 @@ function buildIt() {
     var totalSquares = numSquares * numSquares;
     var numMeat = 0;
     var numHerb = 0;
+    var tundraOk = true;
     perfect = true;
     var children=$('.habitat-builder-flex').children();
     
@@ -78,8 +79,11 @@ function buildIt() {
             continue;
         } else {
             console.log("Found: " + contents.className);
-            if(hasCategory($(contents).attr("data-category"), "plant"))
+            if(hasCategory($(contents).attr("data-category"), "plant")) {
+                if($(contents).attr('data-tundraok') !== "1")
+                    tundraOk = false;
                 numPlants++;
+            }
             
             if(hasCategory($(contents).attr("data-category"), "food")) {
                 if(hasCategory($(contents).attr("data-category"), "plant"))
@@ -101,14 +105,12 @@ function buildIt() {
         perfect = false;
     }
     
-    if(backgroundAlt !== "tundra" && numPlants < 5) {
+    if(numPlants < 5) {
         plantStr = incorrectPrefix + "There aren't enough plants here.</span>";
         perfect = false;
-    } else if(backgroundAlt === "tundra" && numPlants > 0) {
-        plantStr = incorrectPrefix + "Since when are plants seen in the tundra?</span>";
+    } else if(backgroundAlt === "tundra" && !tundraOk) {
+        plantStr = incorrectPrefix + "Since when are these types of plants seen in the tundra?</span>";
         perfect = false;
-    } else if(backgroundAlt === "tundra") {
-        plantStr = correctPrefix + "Good choice! Plants aren't in the tundra.</span>";
     }
     
     if(animalDiet === "herbivore")
@@ -217,6 +219,7 @@ function generateHabitatBuilder(element) {
                     var img = document.createElement("img");
                     img.src = $(item).attr("src");
                     $(img).attr("data-category", category);
+                    $(img).attr("data-tundraok", $(item).attr("data-tundraok"));
                     img.classList.add("habitat-builder-image");
                     img.classList.add("habitat-builder-item");
                     $(this)[0].appendChild(img);
